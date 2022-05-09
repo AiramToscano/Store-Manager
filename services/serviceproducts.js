@@ -1,12 +1,12 @@
-const { getProducts, getProductsById } = require('../models/modelproducts');
+const modelProducts = require('../models/modelproducts');
 
 const getProductsServices = async () => {
-    const products = await getProducts();
+    const products = await modelProducts.getProducts();
     return products;
 };
 
 const getProductsByIdServices = async (id) => {
-    const productsID = await getProductsById(id);
+    const productsID = await modelProducts.getProductsById(id);
     return productsID;
 };
 

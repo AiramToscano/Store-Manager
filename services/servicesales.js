@@ -1,13 +1,12 @@
-const { getSales, getSalesById } = require('../models/modelsales');
+const modelsales = require('../models/modelsales');
 
 const getSalesServices = async () => {
-    const sales = await getSales();
+    const sales = await modelsales.getSales();
     return sales;
 };
 
 const getSalesByIdServices = async (id) => {
-    const salesID = await getSalesById(id);
-    console.log(salesID);
+    const salesID = await modelsales.getSalesById(id);
     return salesID;
 };
 
