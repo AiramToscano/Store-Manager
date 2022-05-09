@@ -21,8 +21,19 @@ const validCreate = async (name, quantity) => {
     return false;
 };
 
+const validUpdate = async (id, name, quantity) => {
+    const products = await modelProducts.getProductsById(id);
+    if (products.length > 0) {
+        await modelProducts.updateProducts(id, name, quantity);
+        const [productsnew] = await modelProducts.getProductsById(id);
+        return productsnew;
+    }
+    return false;
+};
+
 module.exports = {
     getProductsServices,
     getProductsByIdServices,
     validCreate,
+    validUpdate,
 };
