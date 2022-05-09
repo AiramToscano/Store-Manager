@@ -22,6 +22,10 @@
     });
     return res.status(201).json({ message: 'produto criado' });
   };
+
+  function isNum(val) {
+    return Number.isNaN(val);
+  }
  
 const erro = (err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message });
  
@@ -29,4 +33,5 @@ const erro = (err, _req, res, _next) => res.status(err.statusCode).json({ messag
     validUndefinedSales,
     validQuantityLengthSales,
     erro,
+    isNum,
  };

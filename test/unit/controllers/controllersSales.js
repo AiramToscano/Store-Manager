@@ -154,3 +154,35 @@ describe('Chamada do controller getSalesIdControler', () => {
       });
     });
   })
+
+  // describe('quando a rota não é especificado', async () => {
+  //   error = new Error('Rota invalida')
+  //   const response = {};
+  //   const request = {};
+
+  //   before(() => {
+  //     response.status = sinon.stub()
+  //       .returns(response);
+  //     response.json = sinon.stub()
+  //       .returns();
+
+  //     sinon.stub(serviceSales, 'getSalesByIdServices').throws(error);
+  //   })
+
+  //   after(() => {
+  //     serviceSales.getSalesByIdServices.restore();
+  //   });
+
+  //   it('é chamado o método "status" passando o código 500', async () => {
+  //     await controllerSales.getSalesIdControler(request, response)
+
+  //     expect(response.status.calledWith(500)).to.be.equal(true);
+  //   });
+  //   it('é chamado o método "status" passando o código 500', async () => {
+  //     await controllerSales.getSalesIdControler(request, response)
+
+  //     expect(response.json.calledWith({error: 'Rota Invalida'})).to.be.equal(
+  //       true
+  //     );
+  //   });
+  // });

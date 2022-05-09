@@ -31,9 +31,19 @@ const validUpdate = async (id, name, quantity) => {
     return false;
 };
 
+const validDelete = async (id) => {
+    const products = await modelProducts.getProductsById(id);
+    if (products.length > 0) {
+        await modelProducts.deleteProducts(id);
+        return true;
+    }
+    return false;
+};
+
 module.exports = {
     getProductsServices,
     getProductsByIdServices,
     validCreate,
     validUpdate,
+    validDelete,
 };

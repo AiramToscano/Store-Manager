@@ -114,3 +114,104 @@ describe('Busca um products por ID especifico', () => {
          })
        })
 })
+
+describe("Insere um novo produto no BD", () => {
+  const resultObj = [
+    {
+        name: "Martelo de Thor",
+        quantity: 10
+    },
+ ]
+
+  before(() => {
+    const execute = [{ insertId: 1 }];
+
+    sinon.stub(connection, "execute").resolves([execute]);
+  });
+
+  after(() => {
+    connection.execute.restore();
+  });
+
+  describe("quando o produto é inserido com sucesso", async () => {
+    it("retorna um objeto", async () => {
+      const [result] = await modelproducts.createProducts(resultObj);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('tal objeto possui o "id" do novo filme inserido', async () => {
+      const [result] = await modelproducts.createProducts(resultObj);
+      expect(result).to.have.a.property("insertId");
+    });
+  });
+});
+
+describe("Modifica um produto no BD", () => {
+  const resultObj = [
+    {
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10
+    },
+ ]
+ const resultUpdate = [
+  {
+      name: "Machado de Thor",
+      quantity: 10
+  },
+]
+
+  before(() => {
+    const execute = resultUpdate;
+
+    sinon.stub(connection, "execute").resolves([execute]);
+  });
+
+  after(() => {
+    connection.execute.restore();
+  });
+
+  describe("quando o produto é atualizado com sucesso", async () => {
+    it("retorna um objeto", async () => {
+      const [result] = await modelproducts.updateProducts(resultObj);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('tal produto possui o "name" do novo produto inserido', async () => {
+      const [result] = await modelproducts.updateProducts(resultObj);
+     
+      expect(result).to.have.a.property("name");
+    });
+  });
+});
+
+describe("deleta um produto no BD", () => {
+  const resultObj = 1;
+ const resultUpdate = [[]]
+
+  before(() => {
+    const execute = resultUpdate;
+
+    sinon.stub(connection, "execute").resolves([execute]);
+  });
+
+  after(() => {
+    connection.execute.restore();
+  });
+
+  describe("quando o produto é deletado com sucesso", async () => {
+    it("retorna um objeto", async () => {
+      const [result] = await modelproducts.deleteProducts(resultObj);
+
+      expect(result).to.be.a("array");
+    });
+
+    it('tal produto não possui o "name"', async () => {
+      const [result] = await modelproducts.deleteProducts(resultObj);
+     
+      expect(result).to.have.not.property("name");
+    });
+  });
+});
