@@ -19,13 +19,13 @@ const validQuantityUndefined = (req, _res, next) => {
     next();
  };
  
- const validQuantityLength = (req, res, next) => {
+ const validQuantityLength = (req, _res, next) => {
    const { quantity } = req.body;
    if (quantity <= 0) {
      return next({ statusCode: 422, 
      message: '"quantity" must be greater than or equal to 1' });
    }
-   return res.status(201).json({ message: 'produto criado' });
+   return next();
  };
 
  const error = (err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message });

@@ -11,7 +11,7 @@ const { validUndefinedSales,
   validQuantityLengthSales,
   erro } = require('./middlewares/middlewaresSales');
 const { getProductsControler,
-   getProductsIdControler } = require('./controllers/controllerproducts');
+   getProductsIdControler, registerProduct } = require('./controllers/controllerproducts');
   
 const { getSalesControler,
   getSalesIdControler } = require('./controllers/controllersales');
@@ -31,7 +31,7 @@ app.get('/sales', getSalesControler);
 app.put('/products/:id', validNameUndefined, 
 validNameLength, validQuantityUndefined, validQuantityLength);
 app.post('/products', validNameUndefined, 
-validNameLength, validQuantityUndefined, validQuantityLength);
+validNameLength, validQuantityUndefined, validQuantityLength, registerProduct);
 app.put('/sales/:id', validUndefinedSales,
 validQuantityLengthSales, erro);
 app.post('/sales', validUndefinedSales, 

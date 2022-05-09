@@ -22,7 +22,22 @@ const getProductsIdControler = async (req, res) => {
     }
 };
 
+const registerProduct = async (req, res) => {
+    const { name, quantity } = req.body;
+    const register = await serviceProduct.validCreate(name, quantity);
+    if (!register) {
+        return res.status(409).json({ message: 'Product already exists' });
+    }
+    const ojbProduct = {
+        id: register,
+        name, 
+        quantity,
+    };
+    res.status(201).json(ojbProduct);
+};
+
 module.exports = {
     getProductsControler,
     getProductsIdControler,
+    registerProduct,
 };
