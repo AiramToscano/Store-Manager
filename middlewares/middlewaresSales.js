@@ -24,7 +24,8 @@
   };
 
   function isNum(val) {
-    return Number.isNaN(val);
+    if (val > 0 || val < 0) return true;
+    return false;
   }
  
 const erro = (err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message });

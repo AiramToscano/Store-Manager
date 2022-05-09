@@ -153,6 +153,37 @@ describe('Chamada do controller getSalesIdControler', () => {
         expect(response.json.calledWith([productsMock])).to.be.equal(true);
       });
     });
+    describe('quando Não existe a rota', async () => {
+      request.params = {id: ss}
+      const response = {};
+      const request = {};
+  
+      before(() => {
+        response.status = sinon.stub()
+          .returns(response);
+        response.json = sinon.stub()
+          .returns();
+  
+        sinon.stub(middlewaresSales, 'isNum')
+          .resolves();
+      })
+  
+      after(() => {
+        middlewaresSales.isNum.restore();
+      });
+  
+      it('é chamado o método "status" passando o código 500', async () => {
+        await controllerSales.getSalesIdControler(request, response)
+  
+        expect(response.status.calledWith(500)).to.be.equal(true);
+      });
+      it('é chamado o método "json" passando uma messagem rota invalida', async () => {
+        await controllerSales.getSalesIdControler(request, response)
+        expect(response.json.calledWith({error: 'Rota invalida'})).to.be.equal(
+            true
+          );
+      });
+    });
   })
 
   // describe('quando a rota não é especificado', async () => {
