@@ -57,29 +57,29 @@ describe('Busca todos os products na camada Model', () => {
         )
       })
     })
-})
-describe("Insere um novo produto no BD", () => {
-  describe("quando é inserido com sucesso", async () => {
-    const produto = {
-        name: "pc gamer ultra mega power",
-        quantity: 10
-    };
+// })
+// describe("Insere um novo produto no BD", () => {
+//   describe("quando é inserido com sucesso", async () => {
+    
+//     const produto = {
+//         name: "pc gamer ultra mega power",
+//         quantity: 10
+//     };
+//     before(() => {
+//       const execute = { id: 1 };
+//       sinon.stub(modelProducts, "createProducts").resolves(execute);
+//     });
 
-    before(() => {
-      const ID_EXAMPLE = 1;
-      sinon.stub(modelProducts, "createProducts").resolves({id: ID_EXAMPLE});
-    });
+//     after(() => {
+//       modelProducts.createProducts.restore();
+//     });
 
-    after(() => {
-      modelProducts.createProducts.restore();
-    });
+//     it("retorna um objeto", async () => {
+//       const response = await serviceproducts.validCreate(produto);
 
-    it('tal objeto possui o "id" do novo filme inserido', async () => {
-      const response = await serviceproducts.validCreate(produto);
-
-      expect(response).to.have.a.property("id");
-    });
-  });
+//       expect(response).to.be.a("object");
+//     });
+//   });
 //   describe("se aconteceu algum erro", async () => {
 //     const produto = {
 //       name: "pc gamer ultra mega power",
@@ -162,86 +162,86 @@ describe('Busca um products por ID especifico na camada model', () => {
         }
       })
     });
-})
-describe("atualiza um novo produto no BD", () => {
-  describe("quando é atualizado com sucesso", async () => {
-    const produto = {
-        id: 1,
-        name: "pc gamer ultra mega power",
-        quantity: 10
-    };
+// })
+// describe("atualiza um novo produto no BD", () => {
+//   describe("quando é atualizado com sucesso", async () => {
+//     const produto = [{
+//         id: 1,
+//         name: "pc gamer ultra mega power",
+//         quantity: 10
+//     }];
 
-    before(() => {
-      sinon.stub(modelProducts, "updateProducts").resolves(produto);
-    });
+//     before(() => {
+//       sinon.stub(modelProducts, "updateProducts").resolves(produto);
+//     });
 
-    after(() => {
-      modelProducts.updateProducts.restore();
-    });
+//     after(() => {
+//       modelProducts.updateProducts.restore();
+//     });
 
-    it('o array possui objetos', async () => {
-      const result = await serviceproducts.validUpdate(2);
-      expect(result).to.be.an('object');
-    })
-    it('o objeto não esta vazio', async () => {
-      const result = await serviceproducts.validUpdate(2);
-      expect(result).to.be.not.empty;
-    })
-  });
-  describe("se aconteceu algum erro", async () => {
-    const idError = 'ss';
-      before(() => {
-        sinon.stub(modelProducts, "updateProducts").resolves([[]]);
-      });
+//     it('o array possui objetos', async () => {
+//       const result = await serviceproducts.validUpdate(produto);
+//       expect(result).to.be.an('object');
+//     })
+//     it('o objeto não esta vazio', async () => {
+//       const result = await serviceproducts.validUpdate(produto);
+//       expect(result).to.be.not.empty;
+//     })
+//   });
+//   describe("se aconteceu algum erro", async () => {
+//     const idError = 'ss';
+//       before(() => {
+//         sinon.stub(modelProducts, "updateProducts").resolves([[]]);
+//       });
   
-      after(() => {
-        modelProducts.updateProducts.restore();
-      });
+//       after(() => {
+//         modelProducts.updateProducts.restore();
+//       });
   
-      it('verifica se houve algum erro ', async () => {
-        try{
-        await serviceproducts.validUpdate(idError);
-        } catch (err) {
+//       it('verifica se houve algum erro ', async () => {
+//         try{
+//         await serviceproducts.validUpdate(idError);
+//         } catch (err) {
   
-          expect(err.message).to.be.equal('Product not found');
-        }
-      })
-    });
-});
+//           expect(err.message).to.be.equal('Product not found');
+//         }
+//       })
+//     });
+// });
 
-describe("deleta um novo produto no BD", () => {
-  describe("quando é deletado com sucesso", async () => {
+// describe("deleta um novo produto no BD", () => {
+//   describe("quando é deletado com sucesso", async () => {
 
-    before(() => {
-      sinon.stub(modelProducts, "deleteProducts").resolves(true);
-    });
+//     before(() => {
+//       sinon.stub(modelProducts, "deleteProducts").resolves([true]);
+//     });
 
-    after(() => {
-      modelProducts.deleteProducts.restore();
-    });
+//     after(() => {
+//       modelProducts.deleteProducts.restore();
+//     });
 
-    it('verifica se houve a delete ', async () => {
-      const result = await serviceproducts.validDelete(2);
-      expect(result).to.be.equal(true);
-    })
-  });
-  describe("se aconteceu algum erro", async () => {
-  const idError = 'ss';
-    before(() => {
-      sinon.stub(modelProducts, "deleteProducts").resolves([[]]);
-    });
+//     it('verifica se houve a delete ', async () => {
+//       const result = await serviceproducts.validDelete(2);
+//       expect(result).to.be.equal(true);
+//     })
+//   });
+//   describe("se aconteceu algum erro", async () => {
+//   const idError = 'ss';
+//     before(() => {
+//       sinon.stub(modelProducts, "deleteProducts").resolves([[]]);
+//     });
 
-    after(() => {
-      modelProducts.deleteProducts.restore();
-    });
+//     after(() => {
+//       modelProducts.deleteProducts.restore();
+//     });
 
-    it('verifica se houve algum erro ', async () => {
-      try{
-      await serviceproducts.validDelete(idError);
-      } catch (err) {
+//     it('verifica se houve algum erro ', async () => {
+//       try{
+//       await serviceproducts.validDelete(idError);
+//       } catch (err) {
 
-        expect(err.message).to.be.equal('Product not found');
-      }
-    })
-  });
+//         expect(err.message).to.be.equal('Product not found');
+//       }
+//     })
+//   });
 });

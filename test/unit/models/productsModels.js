@@ -116,17 +116,17 @@ describe('Busca um products por ID especifico', () => {
 })
 
 describe("Insere um novo produto no BD", () => {
-  const resultObj = [
+  const resultObj = 
     {
         name: "Martelo de Thor",
         quantity: 10
-    },
- ]
+    }
+ 
 
   before(() => {
     const execute = [{ insertId: 1 }];
 
-    sinon.stub(connection, "execute").resolves([execute]);
+    sinon.stub(connection, "execute").resolves(execute);
   });
 
   after(() => {
@@ -135,14 +135,14 @@ describe("Insere um novo produto no BD", () => {
 
   describe("quando o produto é inserido com sucesso", async () => {
     it("retorna um objeto", async () => {
-      const [result] = await modelproducts.createProducts(resultObj);
+      const result = await modelproducts.createProducts(resultObj);
 
       expect(result).to.be.a("object");
     });
 
     it('tal objeto possui o "id" do novo filme inserido', async () => {
-      const [result] = await modelproducts.createProducts(resultObj);
-      expect(result).to.have.a.property("insertId");
+      const result = await modelproducts.createProducts(resultObj);
+      expect(result).to.have.a.property("id");
     });
   });
 });

@@ -19,9 +19,8 @@ const registerProduct = async (req, res) => {
     try {
     const { name, quantity } = req.body;
     const register = await serviceProduct.validCreate(name, quantity);
-    const { insertId } = register;
     const ojbProduct = {
-        id: insertId,
+        id: register.id,
         name, 
         quantity,
     };

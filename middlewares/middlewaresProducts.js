@@ -4,7 +4,7 @@ const validNameUndefined = (req, _res, next) => {
    next();
 };
 
-const validNameLength = (req, res, next) => {
+const validNameLength = (req, _res, next) => {
   const { name } = req.body;
   if (name.length < 5) {
     return next({ statusCode: 422, 
