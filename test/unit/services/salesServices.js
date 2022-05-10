@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const modelsales = require('../../../models/modelsales');
 const servicesSales = require('../../../services/servicesales')
-
+//teste
 describe('Busca todos as vendas na camada model', () => {
     describe('quando não existe nenhuma venda', () => {
         const result = [];
