@@ -73,57 +73,51 @@ describe('Chamada do controller getSalesControler', () => {
       expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
     });
   });
-})
-
-describe('Chamada do controller getSalesIdControler', () => {
-    describe('Quando não existem produtos no banco com o ID informado', () => {
+  })
+  describe('Chamada do controller getSalesIdControler', () => {
+    describe('Quando existem produtos no banco com o ID informado', () => {
       const response = {}
       const request = {}
-  
+      const SalesMock = [
+        {
+          date: "2022-05-10T22:31:09.000Z",
+          productId: 3,
+          quantity: 15
+        }
+        ]
       before(() => {
-        request.params = {id: 20}
+        request.params = {id: 1}
         response.status = sinon.stub().returns(response);
         response.json = sinon.stub().returns();
   
-        sinon.stub(serviceSales, 'getSalesByIdServices').resolves([]);
+        sinon.stub(serviceSales, 'getSalesByIdServices').resolves(SalesMock);
       })
   
       after(() => {
         serviceSales.getSalesByIdServices.restore();
       })
   
-      it('é retornado o metodo "status" passando o codigo 404', async () => {
+      it('é retornado o metodo "status" passando o codigo 200', async () => {
         await controllerSales.getSalesIdControler(request, response)
   
-        expect(response.status.calledWith(404)).to.be.equal(true);
+        expect(response.status.calledWith(200)).to.be.equal(true);
       })
   
-      it('é retornado o metodo json contendo um objeto', async () => {
+      it('é retornado o metodo json contendo um array', async () => {
         await controllerSales.getSalesIdControler(request, response)
   
-        expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
+        expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
       })
-      it('é chamado o método "json" passando uma messagem not found', async () => {
-        await controllerSales.getSalesIdControler(request, response)
-        // expect(response.json).to.be.equal('Product not found');
-        expect(response.json.calledWith({message: 'Sale not found'})).to.be.equal(
-            true
-          );
-      });
     })
-  
-    describe('quando existem produtos com o ID especificado', async () => {
-      request.params = {id: 2}
+    describe('quando cai catch', async () => {
+      const objError = {
+        error: 404,
+        message: 'Sale not found',
+    };
       const response = {};
       const request = {};
+      request.params = {id: 20}
   
-      const productsMock = [
-        {
-            date: "2022-05-07T01:12:42.000Z",
-            productId: 3,
-            quantity: 15
-        }
-      ]
       before(() => {
         response.status = sinon.stub()
           .returns(response);
@@ -131,89 +125,26 @@ describe('Chamada do controller getSalesIdControler', () => {
           .returns();
   
         sinon.stub(serviceSales, 'getSalesByIdServices')
-          .resolves(productsMock);
+          .resolves(objError);
       })
   
       after(() => {
         serviceSales.getSalesByIdServices.restore();
       });
   
-      it('é chamado o método "status" passando o código 200', async () => {
-        await controllerSales.getSalesIdControler(request, response)
-  
-        expect(response.status.calledWith(200)).to.be.equal(true);
-      });
-  
-      it('é chamado o método "json" passando um array', async () => {
-        await controllerSales.getSalesIdControler(request, response)
-        expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
-      });
-      it('é chamado o método "json" com valores date, productId e quantity', async () => {
-        await controllerSales.getSalesIdControler(request, response)
-        expect(response.json.calledWith([productsMock])).to.be.equal(true);
-      });
-    });
-    describe('quando Não existe a rota', async () => {
-      request.params = {id: ss}
-      const response = {};
-      const request = {};
-  
-      before(() => {
-        response.status = sinon.stub()
-          .returns(response);
-        response.json = sinon.stub()
-          .returns();
-  
-        sinon.stub(middlewaresSales, 'isNum')
-          .resolves();
-      })
-  
-      after(() => {
-        middlewaresSales.isNum.restore();
-      });
-  
       it('é chamado o método "status" passando o código 500', async () => {
+        try{
         await controllerSales.getSalesIdControler(request, response)
-  
-        expect(response.status.calledWith(500)).to.be.equal(true);
+        } catch(err) {
+        expect(response.err.error).to.be.equal(404);
+        }
       });
-      it('é chamado o método "json" passando uma messagem rota invalida', async () => {
+      it('é chamado o método "json" passando uma messagem Product not found', async () => {
+        try {
         await controllerSales.getSalesIdControler(request, response)
-        expect(response.json.calledWith({error: 'Rota invalida'})).to.be.equal(
-            true
-          );
+        } catch (err) {
+          expect(response.err.message).to.be.equal('Sale not found');
+        }
       });
     });
-  })
-
-  // describe('quando a rota não é especificado', async () => {
-  //   error = new Error('Rota invalida')
-  //   const response = {};
-  //   const request = {};
-
-  //   before(() => {
-  //     response.status = sinon.stub()
-  //       .returns(response);
-  //     response.json = sinon.stub()
-  //       .returns();
-
-  //     sinon.stub(serviceSales, 'getSalesByIdServices').throws(error);
-  //   })
-
-  //   after(() => {
-  //     serviceSales.getSalesByIdServices.restore();
-  //   });
-
-  //   it('é chamado o método "status" passando o código 500', async () => {
-  //     await controllerSales.getSalesIdControler(request, response)
-
-  //     expect(response.status.calledWith(500)).to.be.equal(true);
-  //   });
-  //   it('é chamado o método "status" passando o código 500', async () => {
-  //     await controllerSales.getSalesIdControler(request, response)
-
-  //     expect(response.json.calledWith({error: 'Rota Invalida'})).to.be.equal(
-  //       true
-  //     );
-  //   });
-  // });
+  });

@@ -1,54 +1,55 @@
 const serviceProduct = require('../services/serviceproducts');
 
 const getProductsControler = async (_req, res) => {
-    try {
     const products = await serviceProduct.getProductsServices();
     res.status(200).json(products);
-    } catch (err) {
-        console.error(err);
-    }
 };
 
 const getProductsIdControler = async (req, res) => {
     try {
         const { id } = req.params;
-        // const productsIdteste = await serviceProduct.getProductsByIdServices(id);
-        // console.log(productsIdteste);
         const [productsId] = await serviceProduct.getProductsByIdServices(id);
-        if (productsId !== undefined) return res.status(200).json(productsId);
-        return res.status(404).json({ message: 'Product not found' });
+        return res.status(200).json(productsId);  
     } catch (err) { // como eu trato o erro do try cacth
-        console.error(err);
+        return res.status(err.error).json({ message: err.message });
     }
 };
 
 const registerProduct = async (req, res) => {
+    try {
     const { name, quantity } = req.body;
     const register = await serviceProduct.validCreate(name, quantity);
-    if (!register) {
-        return res.status(409).json({ message: 'Product already exists' });
-    }
+    const { insertId } = register;
     const ojbProduct = {
-        id: register,
+        id: insertId,
         name, 
         quantity,
     };
-    res.status(201).json(ojbProduct);
+   return res.status(201).json(ojbProduct);
+   } catch (err) {
+    return res.status(err.error).json({ message: err.message });
+   }
 };
 
 const updateProduct = async (req, res) => {
+    try {
     const { id } = req.params;
     const { name, quantity } = req.body;
     const uptade = await serviceProduct.validUpdate(id, name, quantity);
-    if (!uptade) return res.status(404).json({ message: 'Product not found' });
-    res.status(200).json(uptade);
+    return res.status(200).json(uptade);
+    } catch (err) {
+        return res.status(err.error).json({ message: err.message });
+    }
 };
 
 const deleteProduct = async (req, res) => {
+    try {
     const { id } = req.params;
-    const uptade = await serviceProduct.validDelete(id);
-    if (!uptade) return res.status(404).json({ message: 'Product not found' });
-    res.status(204).send();
+    await serviceProduct.validDelete(id);
+    return res.status(204).send();
+    } catch (err) {
+     return res.status(err.error).json({ message: err.message });
+    }
 };
 
 module.exports = {

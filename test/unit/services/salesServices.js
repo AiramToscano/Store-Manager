@@ -62,7 +62,7 @@ describe('Busca todos as vendas na camada model', () => {
 
 describe('Busca uma venda por ID especifico', () => {
     describe('Quando não existe a venda com o ID especificado', () => {
-        const result = [];
+        const result = [[]];
         const id = 20;
         before(() => {
             sinon.stub(modelsales, 'getSalesById').resolves(result);
@@ -75,7 +75,7 @@ describe('Busca uma venda por ID especifico', () => {
             expect(result).to.be.an('array');
         })
         it('o array está vazio', async () => {
-            const result = await servicesSales.getSalesByIdServices(id);
+            const [result] = await servicesSales.getSalesByIdServices(id);
             expect(result).to.be.empty;
         })
     })
@@ -112,6 +112,35 @@ describe('Busca uma venda por ID especifico', () => {
               'date',
               'productId',
               'quantity'
+            )
+          })
+       })
+       describe('Quando Não existe a venda com ID no meu banco e retorna um erro', () => {
+        const saleId = 1;
+        const objError = [{
+                error: 404,
+                message: 'Sale not Found',
+            }];
+        
+        before(() => {
+           sinon.stub(modelsales, 'getSalesById').resolves(objError);
+        })
+        after(() => {
+            modelsales.getSalesById.restore();
+        })
+        it('retorna um objeto', async () => {
+            const [result] = await servicesSales.getSalesByIdServices(saleId);
+           expect(result).to.be.an('object');
+        })
+        it('o objeto não esta vazio', async () => {
+            const result = await servicesSales.getSalesByIdServices(saleId);
+           expect(result).to.be.not.empty;
+         })
+         it('o objeto contem os atributos error, message', async () => {
+            const [result] = await servicesSales.getSalesByIdServices(saleId);
+            expect(result).to.be.includes.all.keys(
+              'error',
+              'message',
             )
           })
        })
