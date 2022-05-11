@@ -8,14 +8,13 @@ const { validNameUndefined,
   error } = require('./middlewares/middlewaresProducts');
 
 const { validUndefinedSales,
-  validQuantityLengthSales,
-  erro } = require('./middlewares/middlewaresSales');
+  validQuantityLengthSales } = require('./middlewares/middlewaresSales');
 const { getProductsControler,
    getProductsIdControler,
    registerProduct, updateProduct, deleteProduct } = require('./controllers/controllerproducts');
   
 const { getSalesControler,
-  getSalesIdControler } = require('./controllers/controllersales');
+  getSalesIdControler, createSales } = require('./controllers/controllersales');
 
 const app = express();
 
@@ -34,9 +33,9 @@ validNameLength, validQuantityUndefined, validQuantityLength, updateProduct);
 app.post('/products', validNameUndefined, 
 validNameLength, validQuantityUndefined, validQuantityLength, registerProduct);
 app.put('/sales/:id', validUndefinedSales,
-validQuantityLengthSales, erro);
+validQuantityLengthSales);
 app.post('/sales', validUndefinedSales, 
-validQuantityLengthSales, erro);
+validQuantityLengthSales, createSales);
 app.delete('/products/:id', deleteProduct);
 app.use(error);
 // não remova essa exportação, é para o avaliador funcionar

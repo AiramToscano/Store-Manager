@@ -20,7 +20,7 @@
                 message: '"quantity" must be greater than or equal to 1' });
         }
     });
-    return res.status(201).json({ message: 'produto criado' });
+    next();
   };
 
   function isNum(val) {
@@ -28,11 +28,11 @@
     return false;
   }
  
-const erro = (err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message });
+// const erro = (err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message });
 
  module.exports = {
     validUndefinedSales,
     validQuantityLengthSales,
-    erro,
+    // erro,
     isNum,
  };

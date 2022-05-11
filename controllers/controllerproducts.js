@@ -10,7 +10,7 @@ const getProductsIdControler = async (req, res) => {
         const { id } = req.params;
         const [productsId] = await serviceProduct.getProductsByIdServices(id);
         return res.status(200).json(productsId);  
-    } catch (err) { // como eu trato o erro do try cacth
+    } catch (err) {
         return res.status(err.error).json({ message: err.message });
     }
 };
