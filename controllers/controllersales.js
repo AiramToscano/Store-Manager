@@ -19,9 +19,7 @@ const createSales = async (req, res) => {
     try {
         const data = req.body;
         const salesId = await serviceSales.createSales(data);
-        const { id, itemsSold } = salesId;
-        const teste = itemsSold[0];
-        return res.status(201).json({ id, itemsSold: teste });
+        return res.status(201).json(salesId);
     } catch (err) {
          return res.status(err.error).json({ message: err.message });
         }
