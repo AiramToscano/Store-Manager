@@ -28,12 +28,10 @@ const validQuantityUndefined = (req, _res, next) => {
    return next();
  };
 
- const error = (err, _req, res, _next) => res.status(err.statusCode).json({ message: err.message });
-
 module.exports = {
     validNameUndefined,
     validNameLength,
     validQuantityUndefined,
     validQuantityLength,
-    error,
+
 };

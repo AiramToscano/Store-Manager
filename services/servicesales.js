@@ -18,16 +18,18 @@ const getSalesByIdServices = async (id) => {
 const createSales = async (data) => {
     const datanow = '2022-05-10 22:20:10'; // mokei uma data qualquer
     const sales = await modelsales.createSales(datanow);
-    // if (sales === undefined) throw objError;
     const { id } = sales;
     const products = await Promise.all(data.map(async (e) => {
         await modelsales.createSalesProducers(id, e.productId, e.quantity);
         const getsales = await modelsales.getSalesAndProducts(id);
+        console.log(getsales);
+        if (getsales === undefined) throw objError;
         return getsales;
     }));
+    // console.log(products);
     const obj = {
         id,
-        itemsSold: products, // irá retornar sempre o ultimo array
+        itemsSold: products,
     };
     return obj;
 };
