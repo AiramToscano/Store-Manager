@@ -35,9 +35,8 @@ const createSalesProducers = async (saleid, productid, quantity) => {
 };
 
 const getSalesAndProducts = async (id) => {
-    const query = `SELECT SP.product_id 
-    AS productId, SP.quantity FROM StoreManager.sales_products AS SP
-    JOIN StoreManager.sales AS SA ON SA.id = SP.sale_id WHERE SA.id =?`;
+    const query = `SELECT product_id AS productId, quantity FROM StoreManager.sales_products 
+    WHERE sale_id = ? ORDER BY productId`;
     const [searchSales] = await connection.execute(query, [id]);
     return searchSales;
 };

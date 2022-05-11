@@ -18,14 +18,13 @@ const getSalesByIdServices = async (id) => {
 const createSales = async (data) => {
     const datanow = '2022-05-10 22:20:10'; // mokei uma data qualquer
     const sales = await modelsales.createSales(datanow);
-    const { id } = sales;
     await data.forEach(async (e) => {
-        await modelsales.createSalesProducers(id, e.productId, e.quantity);
+        await modelsales.createSalesProducers(sales.id, e.productId, e.quantity);
     });
-    const getsales = await modelsales.getSalesAndProducts(id);
+    const getsales = await modelsales.getSalesAndProducts(sales.id);
      if (getsales.length < 1) throw objError;
      const ojb = {
-         id,
+         id: sales.id,
          itemsSold: getsales,
      };
     return ojb;
