@@ -13,7 +13,7 @@ const { getProductsControler,
    registerProduct, updateProduct, deleteProduct } = require('./controllers/controllerproducts');
   
 const { getSalesControler,
-  getSalesIdControler, createSales } = require('./controllers/controllersales');
+  getSalesIdControler, createSales, updateSales } = require('./controllers/controllersales');
 
 const err = require('./middlewares/middlewareError');
 
@@ -34,7 +34,7 @@ validNameLength, validQuantityUndefined, validQuantityLength, updateProduct);
 app.post('/products', validNameUndefined, 
 validNameLength, validQuantityUndefined, validQuantityLength, registerProduct);
 app.put('/sales/:id', validUndefinedSales,
-validQuantityLengthSales);
+validQuantityLengthSales, updateSales);
 app.post('/sales', validUndefinedSales, 
 validQuantityLengthSales, createSales);
 app.delete('/products/:id', deleteProduct);

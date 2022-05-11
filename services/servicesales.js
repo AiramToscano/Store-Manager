@@ -30,8 +30,20 @@ const createSales = async (data) => {
     return ojb;
 };
 
+const updateSales = async (data, id) => {
+    await data.forEach(async (e) => {
+        await modelsales.updateSales(id, e.productId, e.quantity);
+    });
+    const obj = {
+        saleId: id,
+        itemUpdated: data,
+    };
+    return obj;
+};
+
 module.exports = {
     getSalesServices,
     getSalesByIdServices,
     createSales,
+    updateSales,
 };
