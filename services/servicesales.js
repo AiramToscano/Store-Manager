@@ -20,14 +20,14 @@ const createSales = async (data) => {
     const sales = await modelsales.createSales(datanow);
     // if (sales === undefined) throw objError;
     const { id } = sales;
-    const products = await Promise.all(data.map((e) => {
-        modelsales.createSalesProducers(id, e.productId, e.quantity);
-        const getsales = modelsales.getSalesAndProducts(id);
+    const products = await Promise.all(data.map(async (e) => {
+        await modelsales.createSalesProducers(id, e.productId, e.quantity);
+        const getsales = await modelsales.getSalesAndProducts(id);
         return getsales;
     }));
     const obj = {
         id,
-        itemsSold: products.length > 1 ? products.pop() : products[0], // irá retornar sempre o ultimo array
+        itemsSold: products, // irá retornar sempre o ultimo array
     };
     return obj;
 };
