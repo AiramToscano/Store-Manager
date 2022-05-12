@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const modelsales = require('../../../models/modelsales');
+const modelproducts = require('../../../models/modelproducts');
 const servicesSales = require('../../../services/servicesales')
 
 describe('Busca todos as vendas na camada model', () => {
@@ -143,14 +144,22 @@ describe("Insere uma nova venda no BD", () => {
             quantity: 3
           }
         ]
+        const resultProduct = 
+           {
+               id: 1,
+               name: "Martelo de Thor",
+               quantity: 10
+           }
          before(() => {
+           sinon.stub(modelproducts, "getProductsById").resolves([resultProduct]);
            sinon.stub(modelsales, "createSales").resolves([{id: 1}]);
            sinon.stub(modelsales, "createSalesProducers").resolves([result]);
            sinon.stub(modelsales, "getSalesAndProducts").resolves(result);
          });
     
          after(() => {
-            modelsales.createSales.restore();
+           modelproducts.getProductsById.restore();
+           modelsales.createSales.restore();
             modelsales.createSalesProducers.restore();
             modelsales.getSalesAndProducts.restore();
          });
@@ -168,13 +177,21 @@ describe("Insere uma nova venda no BD", () => {
               quantity: 3
             }
           ]
+          const resultProduct = 
+           {
+               id: 1,
+               name: "Martelo de Thor",
+               quantity: 10
+           }
           before(() => {
-            sinon.stub(modelsales, "createSales").resolves({id: 20});
+           sinon.stub(modelproducts, "getProductsById").resolves([resultProduct]);
+           sinon.stub(modelsales, "createSales").resolves({id: 20});
            sinon.stub(modelsales, "createSalesProducers").resolves();
            sinon.stub(modelsales, "getSalesAndProducts").resolves([]);
           });
       
           after(() => {
+            modelproducts.getProductsById.restore();
             modelsales.createSales.restore();
             modelsales.createSalesProducers.restore();
             modelsales.getSalesAndProducts.restore();

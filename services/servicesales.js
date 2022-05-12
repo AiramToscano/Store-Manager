@@ -1,10 +1,15 @@
 const modelsales = require('../models/modelsales');
+const modelproducts = require('../models/modelproducts');
 
 const serviceProduct = require('./serviceproducts');
 
 const objError = {
     error: 404,
     message: 'Sale not found',
+};
+const objErrorSales = {
+    error: 422,
+    message: 'Such amount is not permitted to sell',
 };
 const getSalesServices = async () => {
     const sales = await modelsales.getSales();
@@ -17,11 +22,21 @@ const getSalesByIdServices = async (id) => {
     return salesID;
 };
 
+const verificProducts = async (data) => {
+    const verifcproduct = await Promise.all((data.map(async (e) => {
+        const [teste] = await modelproducts.getProductsById(e.productId);
+        if (teste.quantity - e.quantity >= 0) return true;
+        throw objErrorSales;
+    })));
+    return verifcproduct;
+};
+
 const createSales = async (data) => {
     const datanow = '2022-05-10 22:20:10'; // mokei uma data qualquer
+    await verificProducts(data);
     const sales = await modelsales.createSales(datanow);
     await data.forEach(async (e) => {
-        await modelsales.createSalesProducers(sales.id, e.productId, e.quantity);
+        modelsales.createSalesProducers(sales.id, e.productId, e.quantity);
     });
     await serviceProduct.updateQuantiProducts(data);
     const getsales = await modelsales.getSalesAndProducts(sales.id);
