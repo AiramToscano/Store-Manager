@@ -1,5 +1,7 @@
 const modelsales = require('../models/modelsales');
 
+const serviceProduct = require('./serviceproducts');
+
 const objError = {
     error: 404,
     message: 'Sale not found',
@@ -21,6 +23,7 @@ const createSales = async (data) => {
     await data.forEach(async (e) => {
         await modelsales.createSalesProducers(sales.id, e.productId, e.quantity);
     });
+    await serviceProduct.updateQuantiProducts(data);
     const getsales = await modelsales.getSalesAndProducts(sales.id);
      if (getsales.length < 1) throw objError;
      const ojb = {
@@ -45,6 +48,7 @@ const validDelete = async (id) => {
     const salesID = await modelsales.getSalesById(id);
     if (salesID.length > 0) {
         await modelsales.deleteSales(id);
+        await serviceProduct.updateQuantiProductsDelete(salesID);
         return true;
     }
     throw objError;

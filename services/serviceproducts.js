@@ -48,10 +48,24 @@ const validDelete = async (id) => {
     throw objErrorNotFound;
 };
 
+const updateQuantiProducts = async (data) => {
+    await data.forEach(async (e) => {
+        await modelProducts.updateProductsQuantityCreate(e.productId, e.quantity);
+    });
+};
+
+const updateQuantiProductsDelete = async (data) => {
+    await data.forEach(async (e) => {
+        await modelProducts.updateProductsQuantityDelete(e.productId, e.quantity);
+    });
+};
+
 module.exports = {
     getProductsServices,
     getProductsByIdServices,
     validCreate,
     validUpdate,
     validDelete,
+    updateQuantiProducts,
+    updateQuantiProductsDelete,
 };
