@@ -33,8 +33,8 @@ const verificProducts = async (data) => {
 
 const createSales = async (data) => {
     const datanow = '2022-05-10 22:20:10'; // mokei uma data qualquer
-    await verificProducts(data);
     const sales = await modelsales.createSales(datanow);
+    await verificProducts(data);
     await data.forEach(async (e) => {
         modelsales.createSalesProducers(sales.id, e.productId, e.quantity);
     });
