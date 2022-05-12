@@ -115,33 +115,104 @@ describe('Busca uma venda por ID especifico', () => {
             )
           })
        })
-       describe('Quando Não existe a venda com ID no meu banco e retorna um erro', () => {
-        const saleId = 1;
-        const objError = [{
-                error: 404,
-                message: 'Sale not Found',
-            }];
-        
-        before(() => {
-           sinon.stub(modelsales, 'getSalesById').resolves(objError);
-        })
-        after(() => {
+       describe("se aconteceu algum erro", async () => {
+        const idError = 20;
+          before(() => {
+            sinon.stub(modelsales, "getSalesById").resolves([]);
+          });
+      
+          after(() => {
             modelsales.getSalesById.restore();
-        })
-        it('retorna um objeto', async () => {
-            const [result] = await servicesSales.getSalesByIdServices(saleId);
-           expect(result).to.be.an('object');
-        })
-        it('o objeto não esta vazio', async () => {
-            const result = await servicesSales.getSalesByIdServices(saleId);
-           expect(result).to.be.not.empty;
-         })
-         it('o objeto contem os atributos error, message', async () => {
-            const [result] = await servicesSales.getSalesByIdServices(saleId);
-            expect(result).to.be.includes.all.keys(
-              'error',
-              'message',
-            )
+          });
+      
+          it('verifica se houve algum erro ', async () => {
+            try{
+            await servicesSales.getSalesByIdServices(idError);
+            } catch (err) {
+      
+              expect(err.message).to.be.equal('Sale not found');
+            }
           })
-       })
+        });
 })
+describe("Insere uma nova venda no BD", () => {
+    describe("quando é inserido com sucesso", async () => {
+      const result =  [
+          {
+            productId: 1,
+            quantity: 3
+          }
+        ]
+         before(() => {
+           sinon.stub(modelsales, "createSales").resolves([{id: 1}]);
+           sinon.stub(modelsales, "createSalesProducers").resolves([result]);
+           sinon.stub(modelsales, "getSalesAndProducts").resolves(result);
+         });
+    
+         after(() => {
+            modelsales.createSales.restore();
+            modelsales.createSalesProducers.restore();
+            modelsales.getSalesAndProducts.restore();
+         });
+    
+         it("retorna um objeto", async () => {
+           const response = await servicesSales.createSales(result);
+    
+           expect(response).to.be.a("object");
+         });
+       });
+       describe("se aconteceu algum erro", async () => {
+        const result1 =  [
+            {
+              productId: 1,
+              quantity: 3
+            }
+          ]
+          before(() => {
+            sinon.stub(modelsales, "createSales").resolves({id: 20});
+           sinon.stub(modelsales, "createSalesProducers").resolves();
+           sinon.stub(modelsales, "getSalesAndProducts").resolves([]);
+          });
+      
+          after(() => {
+            modelsales.createSales.restore();
+            modelsales.createSalesProducers.restore();
+            modelsales.getSalesAndProducts.restore();
+          });
+      
+          it('verifica se houve algum erro ', async () => {
+            try{
+            await servicesSales.createSales(result1);
+            } catch (err) {
+              expect(err.message).to.be.equal('Sale not found');
+            }
+          })
+        });
+    });
+ describe("atualiza uma nova venda no BD", () => {
+        describe("quando é atualizado com sucesso", async () => {
+          const result1 = 
+          [
+            {
+              "productId": 1,
+              "quantity": 6
+            }
+          ]
+          before(() => {
+            sinon.stub(modelsales, "updateSales").resolves([{id: 1}]);
+          });
+      
+          after(() => {
+            modelsales.updateSales.restore();
+          });
+      
+          it('é um array possui objetos', async () => {
+            const result = await servicesSales.updateSales(result1,1);
+            expect(result).to.be.an('object');
+          })
+          it('o objeto não esta vazio', async () => {
+            const result = await servicesSales.updateSales(result1,1);
+            expect(result).to.be.not.empty;
+          })
+        });
+      });

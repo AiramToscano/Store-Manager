@@ -118,3 +118,136 @@ describe('Busca uma venda por ID especifico', () => {
           })
        })
 })
+describe("Testando a funcao createSales", () => {
+    const resultObj = 
+    {
+        id: 1,
+        itemsSold: [
+          {
+            productId: 1,
+            quantity: 3
+          }
+        ]
+      }
+   
+  
+    before(() => {
+      const execute = [{ id: 1 }];
+  
+      sinon.stub(connection, "execute").resolves(execute);
+    });
+  
+    after(() => {
+      connection.execute.restore();
+    });
+  
+    describe("quando a venda é inserido com sucesso", async () => {
+      it("retorna um objeto", async () => {
+        const result = await modelsales.createSalesProducers(resultObj);
+  
+        expect(result).to.be.a("object");
+      });
+  
+      it('tal objeto possui o "id" do novo filme inserido', async () => {
+        const result = await modelsales.createSalesProducers(resultObj);
+        expect(result).to.have.a.property("id");
+      });
+    });
+  });
+
+  describe("Testando a funcao createSalesProducers", () => {
+    const resultObj = 
+    {
+        id: 1,
+        itemsSold: [
+          {
+            productId: 1,
+            quantity: 3
+          }
+        ]
+      }
+   
+  
+    before(() => {
+      const execute = [{ id: 1 }];
+  
+      sinon.stub(connection, "execute").resolves(execute);
+    });
+  
+    after(() => {
+      connection.execute.restore();
+    });
+  
+    describe("quando a venda é inserido com sucesso", async () => {
+      it("retorna um objeto", async () => {
+        const result = await modelsales.createSales(resultObj);
+  
+        expect(result).to.be.a("object");
+      });
+  
+      it('tal objeto possui o "id" do novo filme inserido', async () => {
+        const result = await modelsales.createSales(resultObj);
+        expect(result).to.have.a.property("id");
+      });
+    });
+  });
+  describe("Testando a funcao getSalesAndProducts", () => {
+    const resultObj = 
+    {
+        id: 1, 
+      }
+   
+  
+    before(() => {
+      const execute = [{ id: 1 }];
+  
+      sinon.stub(connection, "execute").resolves(execute);
+    });
+  
+    after(() => {
+      connection.execute.restore();
+    });
+  
+    describe("quando a venda é inserido com sucesso", async () => {
+      it("retorna um objeto", async () => {
+        const result = await modelsales.getSalesAndProducts(resultObj.id);
+  
+        expect(result).to.be.a("object");
+      });
+  
+      it('tal objeto possui o "id" do novo filme inserido', async () => {
+        const result = await modelsales.getSalesAndProducts(resultObj);
+        expect(result).to.have.a.property("id");
+      });
+    });
+  });
+  describe("Testando a funcao updateSales", () => {
+    const resultObj = 
+    {
+        id: 1, 
+      }
+   
+  
+    before(() => {
+      const execute = [{ id: 1 }];
+  
+      sinon.stub(connection, "execute").resolves(execute);
+    });
+  
+    after(() => {
+      connection.execute.restore();
+    });
+  
+    describe("quando a venda é inserido com sucesso", async () => {
+      it("retorna um objeto", async () => {
+        const result = await modelsales.updateSales(resultObj.id);
+  
+        expect(result).to.be.a("object");
+      });
+  
+      it('tal objeto possui o "id" do novo filme inserido', async () => {
+        const result = await modelsales.updateSales(resultObj);
+        expect(result).to.have.a.property("id");
+      });
+    });
+  });

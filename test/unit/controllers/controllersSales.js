@@ -109,42 +109,165 @@ describe('Chamada do controller getSalesControler', () => {
         expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
       })
     })
-    describe('quando cai catch', async () => {
+    describe('quando cai catch aqui', async () => {
       const objError = {
         error: 404,
         message: 'Sale not found',
     };
       const response = {};
       const request = {};
-      request.params = {id: 20}
-  
+      response.error = objError
       before(() => {
         response.status = sinon.stub()
-          .returns(response);
+          .returns();
         response.json = sinon.stub()
           .returns();
   
         sinon.stub(serviceSales, 'getSalesByIdServices')
-          .resolves(objError);
+          .resolves([[]]);
       })
   
       after(() => {
         serviceSales.getSalesByIdServices.restore();
       });
   
-      it('é chamado o método "status" passando o código 500', async () => {
+      it('é chamado o método "status" passando o código 404', async () => {
         try{
         await controllerSales.getSalesIdControler(request, response)
         } catch(err) {
-        expect(response.err.error).to.be.equal(404);
+        // expect(response.err.error).to.be.equal(404);
+        const { error } = response.error;
+        expect(error).to.be.equal(404);
+        // expect(response.error.calledWith(404)).to.be.equal(true);
         }
       });
-      it('é chamado o método "json" passando uma messagem Product not found', async () => {
-        try {
-        await controllerSales.getSalesIdControler(request, response)
-        } catch (err) {
-          expect(response.err.message).to.be.equal('Sale not found');
-        }
-      });
+      it('é chamado o método "json" passando uma messagem Sale not found', async () => {
+         try {
+         await controllerSales.getSalesIdControler(request, response)
+         } catch (err) {
+          const { message } = response.error;
+           expect(message).to.be.equal('Sale not found');
+         }
+       });
     });
   });
+  describe('Chamada do controller createSales', () => {
+    describe('Quando existem produtos no banco com o ID informado', () => {
+      const response = {}
+      const request = {}
+      before(() => {
+        const SalesMock =   [
+          {
+            productId: 1,
+            quantity: 300
+          },
+          {
+            productId: 2,
+            quantity: 500
+          }
+        ]
+        request.body = SalesMock;
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+  
+        sinon.stub(serviceSales, 'createSales').resolves(SalesMock);
+      })
+  
+      after(() => {
+        serviceSales.createSales.restore();
+      })
+  
+      it('é retornado o metodo "status" passando o codigo 201', async () => {
+        await controllerSales.createSales(request, response)
+  
+        expect(response.status.calledWith(201)).to.be.equal(true);
+      })
+  
+      it('é retornado o metodo json contendo um array', async () => {
+        await controllerSales.createSales(request, response)
+  
+        expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
+      })
+    })
+    describe('quando cai catch aqui', async () => {
+      const objError = {
+        error: 404,
+        message: 'Sale not found',
+    };
+      const response = {};
+      const request = {};
+      response.error = objError
+      before(() => {
+        response.status = sinon.stub()
+          .returns();
+        response.json = sinon.stub()
+          .returns();
+  
+        sinon.stub(serviceSales, 'createSales')
+          .resolves([[]]);
+      })
+  
+      after(() => {
+        serviceSales.createSales.restore();
+      });
+  
+      it('é chamado o método "status" passando o código 404', async () => {
+        try{
+        await controllerSales.createSales(request, response)
+        } catch(err) {
+        // expect(response.err.error).to.be.equal(404);
+        const { error } = response.error;
+        expect(error).to.be.equal(404);
+        // expect(response.error.calledWith(404)).to.be.equal(true);
+        }
+      });
+      it('é chamado o método "json" passando uma messagem Sale not found', async () => {
+         try {
+         await controllerSales.createSales(request, response)
+         } catch (err) {
+          const { message } = response.error;
+           expect(message).to.be.equal('Sale not found');
+         }
+       });
+    });
+  });
+  describe('Chamada do controller updateSales', () => {
+    describe('Quando existem produtos no banco com o ID informado', () => {
+      const response = {}
+      const request = {}
+      before(() => {
+        const SalesMock =   [
+          {
+            productId: 1,
+            quantity: 300
+          },
+          {
+            productId: 2,
+            quantity: 500
+          }
+        ]
+        request.params = {id: 2};
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+  
+        sinon.stub(serviceSales, 'updateSales').resolves(SalesMock);
+      })
+  
+      after(() => {
+        serviceSales.updateSales.restore();
+      })
+  
+      it('é retornado o metodo "status" passando o codigo 201', async () => {
+        await controllerSales.updateSales(request, response)
+  
+        expect(response.status.calledWith(200)).to.be.equal(true);
+      })
+  
+      it('é retornado o metodo json contendo um array', async () => {
+        await controllerSales.updateSales(request, response)
+  
+        expect(response.json.calledWith(sinon.match.array)).to.be.equal(true);
+      })
+    })
+  });
+
