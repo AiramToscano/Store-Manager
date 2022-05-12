@@ -32,25 +32,27 @@ const verificProducts = async (data) => {
 };
 
 const createSales = async (data) => {
+    await verificProducts(data);
     const datanow = '2022-05-10 22:20:10'; // mokei uma data qualquer
     const sales = await modelsales.createSales(datanow);
-    await verificProducts(data);
     await data.forEach(async (e) => {
         modelsales.createSalesProducers(sales.id, e.productId, e.quantity);
     });
     await serviceProduct.updateQuantiProducts(data);
     const getsales = await modelsales.getSalesAndProducts(sales.id);
-     if (getsales.length < 1) throw objError;
-     const ojb = {
-         id: sales.id,
-         itemsSold: getsales,
-     };
+    if (getsales.length < 1) throw objError;
+    const ojb = {
+        id: sales.id,
+        itemsSold: getsales,
+    };
     return ojb;
 };
 
 const updateSales = async (data, id) => {
+    const salesID = await modelsales.getSalesById(id);
     await data.forEach(async (e) => {
         await modelsales.updateSales(id, e.productId, e.quantity);
+        await serviceProduct.updateQuantiProductsDelete(salesID);
     });
     const obj = {
         saleId: id,

@@ -216,10 +216,12 @@ describe("Insere uma nova venda no BD", () => {
             }
           ]
           before(() => {
+            sinon.stub(modelsales, "getSalesById").resolves([{id: 1}]);
             sinon.stub(modelsales, "updateSales").resolves([{id: 1}]);
           });
       
           after(() => {
+            modelsales.getSalesById.restore();
             modelsales.updateSales.restore();
           });
       
