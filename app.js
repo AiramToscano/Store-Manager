@@ -13,7 +13,8 @@ const { getProductsControler,
    registerProduct, updateProduct, deleteProduct } = require('./controllers/controllerproducts');
   
 const { getSalesControler,
-  getSalesIdControler, createSales, updateSales } = require('./controllers/controllersales');
+  getSalesIdControler, 
+  createSales, updateSales, deleteSales } = require('./controllers/controllersales');
 
 const err = require('./middlewares/middlewareError');
 
@@ -38,6 +39,7 @@ validQuantityLengthSales, updateSales);
 app.post('/sales', validUndefinedSales, 
 validQuantityLengthSales, createSales);
 app.delete('/products/:id', deleteProduct);
+app.delete('/sales/:id', deleteSales);
 app.use(err.error);
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima

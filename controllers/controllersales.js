@@ -32,9 +32,20 @@ const updateSales = async (req, res) => {
         return res.status(200).json(updatesale);
 };
 
+const deleteSales = async (req, res) => {
+    try {
+    const { id } = req.params;
+    await serviceSales.validDelete(id);
+    return res.status(204).send();
+    } catch (err) {
+     return res.status(err.error).json({ message: err.message });
+    }
+};
+
 module.exports = {
     getSalesControler,
     getSalesIdControler,
     createSales,
     updateSales,
+    deleteSales,
 };

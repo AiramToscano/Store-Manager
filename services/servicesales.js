@@ -41,9 +41,19 @@ const updateSales = async (data, id) => {
     return obj;
 };
 
+const validDelete = async (id) => {
+    const salesID = await modelsales.getSalesById(id);
+    if (salesID.length > 0) {
+        await modelsales.deleteSales(id);
+        return true;
+    }
+    throw objError;
+};
+
 module.exports = {
     getSalesServices,
     getSalesByIdServices,
     createSales,
     updateSales,
+    validDelete,
 };
