@@ -250,3 +250,27 @@ describe("deleta um novo produto no BD", () => {
     })
   })
 });
+
+describe("controlando updateQuantiProductsDelete", () => {
+  describe("quando é a quantidade é atualizada com sucesso", async () => {
+    const result1 = [
+    {
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10
+    } ]
+   const id = 1;
+    before(() => {
+      sinon.stub(modelProducts, "updateProductsQuantityDelete").resolves({id: 2});
+    });
+
+    after(() => {
+      modelProducts.updateProductsQuantityDelete.restore();
+    });
+
+    it('verifica se houve a delete ', async () => {
+      const result = await serviceproducts.updateQuantiProductsDelete(result1);
+      expect(result).to.be.equal(undefined);
+    })
+  });
+});

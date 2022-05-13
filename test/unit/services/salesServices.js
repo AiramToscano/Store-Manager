@@ -235,3 +235,89 @@ describe("Insere uma nova venda no BD", () => {
           })
         });
       });
+describe("deleta uma venda no BD", () => {
+        describe("quando é deletado com sucesso", async () => {
+        const obj = {
+          id: 10,
+        }
+          before(() => {
+            const ID_EXAMPLE = 1;
+            sinon.stub(modelsales, "getSalesById").resolves([[]]);
+            sinon.stub(modelsales, "deleteSales").resolves(ID_EXAMPLE);
+          });
+      
+          after(() => {
+            modelsales.getSalesById.restore();
+            modelsales.deleteSales.restore();
+          });
+      
+          it('verifica se houve a delete ', async () => {
+            const result = await servicesSales.validDelete(obj.id);
+            expect(result).to.be.equal(true);
+          })
+        });
+        describe("se aconteceu algum erro", async () => {
+          const idError = 'ss';
+          before(() => {
+            sinon.stub(modelsales, "getSalesById").resolves([]);
+            sinon.stub(modelsales, "deleteSales").resolves();
+          });
+      
+          after(() => {
+            modelsales.getSalesById.restore();
+            modelsales.deleteSales.restore();
+          });
+      
+          it('verifica se houve algum erro ', async () => {
+            try{
+            await servicesSales.validDelete(idError);
+            } catch (err) {
+              expect(err.message).to.be.equal('Sale not found');
+            }
+          })
+        })
+      });
+  describe("Controlando a função verificProducts", () => {
+        describe("quando não tem problema na função", async () => {
+          const result1 =
+            {
+              productId: 1,
+              quantity: 3
+            }
+          before(() => {
+            sinon.stub(modelproducts, "getProductsById").resolves([result1]);
+          });
+      
+          after(() => {
+            modelproducts.getProductsById.restore();
+          });
+      
+          it('se ocorreu tudo certo ', async () => {
+            const [result] = await servicesSales.verificProducts([result1]);
+            expect(result).to.be.equal(true);
+          })
+        });
+        describe("se aconteceu algum erro", async () => {
+          const result1 =  [
+            {
+              productId: 1,
+              quantity: 3
+            }
+          ]
+          before(() => {
+            sinon.stub(modelproducts, "getProductsById").resolves([false]);
+          });
+      
+          after(() => {
+            modelproducts.getProductsById.restore();
+          });
+      
+          it('verifica se houve algum erro ', async () => {
+            try{
+            await servicesSales.verificProducts(result1);
+            } catch (err) {
+              expect(err.message).to.be.equal('Such amount is not permitted to sell');
+            }
+          })
+        })
+      });

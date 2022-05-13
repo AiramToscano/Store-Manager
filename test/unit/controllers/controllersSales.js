@@ -270,4 +270,54 @@ describe('Chamada do controller getSalesControler', () => {
       })
     })
   });
+  describe('Chamada do controller deleteSales', () => {
+    describe('Quando é deletado com sucesso', () => {
+      const response = {}
+      const request = {}
+      before(() => {
+        request.params = {id: 20};
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+  
+        sinon.stub(serviceSales, 'validDelete').resolves(true);
+      })
+  
+      after(() => {
+        serviceSales.validDelete.restore();
+      })
+  
+      it('é retornado o metodo "status" passando o codigo 204', async () => {
+        await controllerSales.deleteSales(request, response)
+  
+        expect(response.status.calledWith(204)).to.be.equal(true);
+      })
+    })
+    describe('quando cai catch', async () => {
+      const response = {};
+      const request = {};
+      request.params = {id: 20}
+  
+      before(() => {
+        response.status = sinon.stub()
+          .returns(response);
+        response.json = sinon.stub()
+          .returns();
+  
+        sinon.stub(serviceSales, 'validDelete')
+          .resolves([[]]);
+      })
+  
+      after(() => {
+        serviceSales.validDelete.restore();
+      });
+  
+      it('é chamado o método "status" passando o código 404', async () => {
+        try{
+        await controllerSales.deleteSales(request, response)
+        } catch(err) {
+        expect(response.err).to.be.equal(404);
+        }
+      })
+    })
+  });
 

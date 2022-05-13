@@ -251,3 +251,32 @@ describe("Testando a funcao createSales", () => {
       });
     });
   });
+ 
+describe("deleta uma venda no BD", () => {
+  const resultObj = 1;
+ const resultUpdate = [[]]
+
+  before(() => {
+    const execute = resultUpdate;
+
+    sinon.stub(connection, "execute").resolves([execute]);
+  });
+
+  after(() => {
+    connection.execute.restore();
+  });
+
+  describe("quando o produto é deletado com sucesso", async () => {
+    it("retorna um objeto", async () => {
+      const [result] = await modelsales.deleteSales(resultObj);
+
+      expect(result).to.be.a("array");
+    });
+
+    it('tal produto não possui o "name"', async () => {
+      const [result] = await modelsales.deleteSales(resultObj);
+     
+      expect(result).to.have.not.property("name");
+    });
+  });
+});

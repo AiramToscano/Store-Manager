@@ -215,3 +215,83 @@ describe("deleta um produto no BD", () => {
     });
   });
 });
+
+describe("Modifica a quantidade de um produto no BD quando a uma venda", () => {
+  const resultObj = [
+    {
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10
+    },
+ ]
+ const resultUpdate = [
+  {
+      name: "Machado de Thor",
+      quantity: 10
+  },
+]
+
+  before(() => {
+    const execute = resultUpdate;
+
+    sinon.stub(connection, "execute").resolves([execute]);
+  });
+
+  after(() => {
+    connection.execute.restore();
+  });
+
+  describe("quando a quantidade é atualizado com sucesso", async () => {
+    it("retorna um objeto", async () => {
+      const [result] = await modelproducts.updateProductsQuantityCreate(resultObj);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('tal produto possui o "name" do novo produto inserido', async () => {
+      const [result] = await modelproducts.updateProductsQuantityCreate(resultObj);
+     
+      expect(result).to.have.a.property("name");
+    });
+  });
+});
+
+describe("Modifica a quantidade de um produto no BD quando a um delete na venda", () => {
+  const resultObj = [
+    {
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10
+    },
+ ]
+ const resultUpdate = [
+  {
+      name: "Machado de Thor",
+      quantity: 10
+  },
+]
+
+  before(() => {
+    const execute = resultUpdate;
+
+    sinon.stub(connection, "execute").resolves([execute]);
+  });
+
+  after(() => {
+    connection.execute.restore();
+  });
+
+  describe("quando o produto é atualizado com sucesso", async () => {
+    it("retorna um objeto", async () => {
+      const [result] = await modelproducts.updateProductsQuantityDelete(resultObj);
+
+      expect(result).to.be.a("object");
+    });
+
+    it('tal produto possui o "name" do novo produto inserido', async () => {
+      const [result] = await modelproducts.updateProductsQuantityDelete(resultObj);
+     
+      expect(result).to.have.a.property("name");
+    });
+  });
+});

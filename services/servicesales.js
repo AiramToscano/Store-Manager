@@ -77,4 +77,5 @@ module.exports = {
     createSales,
     updateSales,
     validDelete,
+    verificProducts,
 };
