@@ -1,20 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const { validNameUndefined,
-  validNameLength,
-  validQuantityUndefined,
-  validQuantityLength } = require('./middlewares/middlewaresProducts');
-
-const { validUndefinedSales,
-  validQuantityLengthSales } = require('./middlewares/middlewaresSales');
-const { getProductsControler,
-   getProductsIdControler,
-   registerProduct, updateProduct, deleteProduct } = require('./controllers/controllerproducts');
-  
-const { getSalesControler,
-  getSalesIdControler, 
-  createSales, updateSales, deleteSales } = require('./controllers/controllersales');
+const routeProduct = require('./routes/routeProduct');
+const routeSales = require('./routes/routeSales');
 
 const err = require('./middlewares/middlewareError');
 
@@ -25,21 +13,8 @@ app.use(bodyParser.json());
 app.get('/', (_request, response) => {
   response.send();
 });
-
-app.get('/products/:id', getProductsIdControler);
-app.get('/sales/:id', getSalesIdControler);
-app.get('/products', getProductsControler);
-app.get('/sales', getSalesControler);
-app.put('/products/:id', validNameUndefined, 
-validNameLength, validQuantityUndefined, validQuantityLength, updateProduct);
-app.post('/products', validNameUndefined, 
-validNameLength, validQuantityUndefined, validQuantityLength, registerProduct);
-app.put('/sales/:id', validUndefinedSales,
-validQuantityLengthSales, updateSales);
-app.post('/sales', validUndefinedSales, 
-validQuantityLengthSales, createSales);
-app.delete('/products/:id', deleteProduct);
-app.delete('/sales/:id', deleteSales);
+app.use('/products', routeProduct);
+app.use('/sales', routeSales);
 app.use(err.error);
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima
