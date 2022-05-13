@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const modelsales = require('../../../models/modelsales');
 const modelproducts = require('../../../models/modelproducts');
 const servicesSales = require('../../../services/servicesales')
+const serviceprodut = require('../../../services/serviceproducts');
 
 describe('Busca todos as vendas na camada model', () => {
     describe('quando não existe nenhuma venda', () => {
@@ -240,19 +241,21 @@ describe("deleta uma venda no BD", () => {
         const obj = {
           id: 10,
         }
+        const id = 1;
           before(() => {
-            const ID_EXAMPLE = 1;
-            sinon.stub(modelsales, "getSalesById").resolves([[]]);
-            sinon.stub(modelsales, "deleteSales").resolves(ID_EXAMPLE);
+            sinon.stub(modelsales, "getSalesById").resolves([id]);
+            sinon.stub(modelsales, "deleteSales").resolves(id);
+            sinon.stub(serviceprodut, "updateQuantiProductsDelete").resolves(id);
           });
       
           after(() => {
             modelsales.getSalesById.restore();
             modelsales.deleteSales.restore();
+            serviceprodut.updateQuantiProductsDelete.restore();
           });
       
-          it('verifica se houve a delete ', async () => {
-            const result = await servicesSales.validDelete(obj.id);
+          it('verifica se houve a delete  ', async () => {
+            const result = await servicesSales.validDelete({id: 1});
             expect(result).to.be.equal(true);
           })
         });
