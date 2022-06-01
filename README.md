@@ -11,3 +11,5 @@
   2- A API a ser construída é um sistema de gerenciamento de vendas em que será possível criar, visualizar, deletar e atualizar produtos e vendas.
   
   3- Você deverá utilizar o banco MySQL para a gestão de dados. Além disso, a API deve ser RESTful.
+  
+  Obs: Alguns testes para a validação do projeto foram implementados pelos especialistas da Trybe.
